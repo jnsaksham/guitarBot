@@ -1,4 +1,3 @@
-autoharm_summary.docx
 Jsb16thSeparated.npz
 requirements.txt
 env
@@ -9,4 +8,4 @@ playground.py
 GuitarBotUDP.pyc
 midi
 xArm-Python-SDK
-autoharmonizer
+Demo.maxpat
