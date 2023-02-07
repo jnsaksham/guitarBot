@@ -1,8 +1,9 @@
 import numpy as np
 import itertools
 from pluck_mapgen import get_string_state
+from dict_maps import tuning
 
-def genNotemap(note):
+def genNotemap(note, tuning):
     """
     - Define ranges for each string.
     - Loop through the strings where the note can be played
@@ -10,14 +11,13 @@ def genNotemap(note):
 
     """
     # For each string
-    lowest_pitch = np.array([40, 45, 50, 55, 59, 64])
-    highest_pitch = lowest_pitch + 10
+    highest_pitch = tuning + 10
 
     frets = np.zeros(6)
     strings = np.zeros(6)
 
     for i in np.arange(6):
-        low = lowest_pitch[i]
+        low = tuning[i]
         high = highest_pitch[i]
         if note >= low and note <= high:
             pos = note-low
@@ -27,21 +27,29 @@ def genNotemap(note):
             continue
     return frets, strings
 
+def fretToNote(array, tuning):
+    notes = []
+    print (array)
+    for i, n in enumerate(array):
+        note = array[i] + tuning[i]
+    return notes
+
 def mapgen():
     fretmap = []
     stringmap = []
 
     for i, note in enumerate(np.arange(40, 75)):
-        frets, strings = genNotemap(note)
+        frets, strings = genNotemap(note, tuning)
         fretmap.append(frets)
         stringmap.append(strings)
 
     return fretmap, stringmap
 
-def index_positions(note, fretmap, stringmap):
+def indexPositions(note, fretmap, stringmap):
     """
     Function to index positions from the existing fretboard map
     """
+    # print (f'note: {note}, type: {type(note)}')
     index = int(note-40) # 40 = the lowest note possible on the guitarbot according to standard tuning
     note_fretmap = fretmap[index]
     note_stringmap = stringmap[index]
@@ -55,7 +63,8 @@ def genStringPossibilities(notes, fretmap, stringmap):
     strings_possibilities = []
     frets_possibilities = []
     for note in notes:
-        fretmap_note, stringmap_note = index_positions(note, fretmap, stringmap)
+        fretmap_note, stringmap_note = indexPositions(note, fretmap, stringmap)
+        print (f'note: {note}, fretmap_note: {fretmap_note}', f'stringmap_note: {stringmap_note}')
         tmp = np.nonzero(stringmap_note)[0]
         strings_possibilities.append(list(tmp+1))
         frets_possibilities.append(list(fretmap_note[tmp]))
@@ -73,7 +82,7 @@ def shortlistCombinations(string_possibilities, fret_possibilities):
     for p in itertools.product(*string_possibilities):
         # Check if duplicates exist in p
         if len(p) == len(set(p)):
-            string_combination.append(p)
+            string_combination.append(list(p))
 
             # For each note
             notes_states = []
