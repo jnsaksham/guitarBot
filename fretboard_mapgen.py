@@ -51,6 +51,7 @@ def indexPositions(note, fretmap, stringmap):
     """
     # print (f'note: {note}, type: {type(note)}')
     index = int(note-40) # 40 = the lowest note possible on the guitarbot according to standard tuning
+    # print (f'index: {index}')
     note_fretmap = fretmap[index]
     note_stringmap = stringmap[index]
     return note_fretmap, note_stringmap

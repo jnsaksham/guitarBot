@@ -161,7 +161,7 @@ def genConfigsPerComb(comb, fmap, smap):
     return f_shortlisted, s_shortlisted
     
 
-def genAllConfigs(relevant_combinations):
+def genAllConfigs(relevant_combinations, fmap, smap):
     """
     Generate all possible configurations on the fretboard from given notes. Include everything such as inversions, etc.
     
@@ -186,24 +186,25 @@ def genAllConfigs(relevant_combinations):
 
 def getCombinations(root, chordType, fmap, smap):
     chord_midi, chord_notes = genBaselineChord(root, chordType)
-    print (f'chord: {chord_notes}')
+    # print (f'chord: {chord_notes}')
     all_notes = getAllNotes(chord_notes)
     numNotes = len(all_notes)
-    print (f'all notes: {all_notes}')
+    # print (f'all notes: {all_notes}')
     all_notes_flattened = getNotesArray(all_notes)
-    print (f'all notes flattened: {all_notes_flattened}')
+    # print (f'all notes flattened: {all_notes_flattened}')
     all_note_sets = getAllNoteSets(all_notes_flattened, numNotes)
     print (f'all note sets: {len(all_note_sets)}')
     rel_combs = filterRelevantCombinations(all_note_sets, all_notes, numNotes)
     print (f'Combinations with all chord notes: {len(rel_combs)}')
-    print (f'sample relevant combinations: {rel_combs[:5]}')
-    chords_rel_combs = chordsMidiToNotes(rel_combs[:5])
-    print (f'chords: {chords_rel_combs[:5]}')
-    # genAllConfigs(rel_combs)
-    fpos_all, spos_all, final_combs = genAllConfigs(rel_combs)
+    # print (f'sample relevant combinations: {rel_combs[:5]}')
+    # chords_rel_combs = chordsMidiToNotes(rel_combs[:5])
+    # print (f'chords: {chords_rel_combs[:5]}')
+    fpos_all, spos_all, final_combs = genAllConfigs(rel_combs, fmap, smap)
     print (f'num: {len(fpos_all)}, unique midiNums: {len(final_combs)}')
-    print (f'comb: {final_combs[0]}, {fpos_all[0]}, spos_all: {spos_all[0]}')
+    # print (f'comb: {final_combs[0]}, {fpos_all[0]}, spos_all: {spos_all[0]}')
+    return fpos_all, spos_all, final_combs
 
-if __name__ == '__main__':
-    fmap, smap = mapgen()
-    getCombinations('A', 'Minor', fmap, smap)
+
+# if __name__ == '__main__':
+#     fmap, smap = mapgen()
+#     getCombinations('A', 'Minor', fmap, smap)
