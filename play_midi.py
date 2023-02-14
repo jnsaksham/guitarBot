@@ -52,7 +52,7 @@ if __name__ == '__main__':
     # midiq = Queue()
     # global arm1
     # arm1 = XArmAPI('192.168.1.215')
-    #
+    
     # arms = [arm1]
     # totalArms = len(arms)
     #

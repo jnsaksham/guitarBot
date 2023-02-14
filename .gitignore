@@ -2,11 +2,8 @@ Jsb16thSeparated.npz
 requirements.txt
 env
 __pycache__
-rt pmiditest
-rtp_midi_interface-python3
 playground.py
-GuitarBotUDP.pyc
 midi
-xArm-Python-SDK
 Demo.maxpat
 all_chords.csv
+all_chords_sixstrings.csv
