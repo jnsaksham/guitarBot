@@ -69,6 +69,27 @@ def createDF(all_chords_metadata):
 def savedf(df, filename):
     df.to_csv(filename, index=False)
 
+def filterDFbyNumstrings(df, numStrings):
+    df = df[df['NumStrings'] == numStrings]
+    return df
+
+def transformDFtoIndexable(filename, numStrings):
+    df = pd.read_csv(filename, index_col=False)
+    df = filterDFbyNumstrings(df, numStrings)
+    df = df.drop(['NumStrings'], axis=1)
+    
+    # Replace ChordType with ChordType+Index appended together
+    df['ChordType'] = df['ChordType'] + df['Index'].astype(str)
+
+    # reorder df columns. Put "Index" column to the end and rename it to "Shape"
+    df = df.rename(columns={'Root': 'LETTER', 'ChordType': 'TYPE', 'Index': 'SHAPE', 'String1': 'STRINGONE', 'String2': 'STRINGTWO', 'String3': 'STRINGTHREE', 'String4': 'STRINGFOUR', 'String5': 'STRINGFIVE', 'String6': 'STRINGSIX'})
+    cols = df.columns.tolist()
+    cols = cols[:2] + cols[3:] + cols[2:3]
+    df = df[cols]
+    # Add a column called "Inversion" between "ChordType" and "String1" with value 0
+    df.insert(2, 'INVERSION', 0)
+    return df
+
 
 if __name__ == '__main__':
     fmap, smap = mapgen()
