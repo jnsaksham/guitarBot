@@ -8,3 +8,10 @@ This repo is a part of my master's project at the Robotics Musicianship Lab, GTC
 
 These things were developed in my first semester and provided a basis for me to explore my actual research question:
 Can we build a system that learns a robot's physical constraints and composes music suited to its embodiment, instead of what a human would play?
+
+Currently we can run the following demos:
+
+demo.py: 
+- Users can first select whether they want to demo single chords or chord progressions. User can also decide if they want humanPlayable or bot's chords.
+- Single chord: This script inputs the root and chordType from the user and loops four different vesions selected at random from the database. The user can then input another chord or the same one. 
+- Multiple chords: This script inputs the chord progression from the user and loops four different vesions selected at random from the database. The user can then input another chord progression or the same one.

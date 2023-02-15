@@ -11,7 +11,7 @@ def genNotemap(note, tuning):
 
     """
     # For each string
-    highest_pitch = tuning + 10
+    highest_pitch = tuning + 9
 
     frets = np.zeros(6)
     strings = np.zeros(6)
@@ -38,7 +38,7 @@ def mapgen():
     fretmap = []
     stringmap = []
 
-    for i, note in enumerate(np.arange(40, 75)):
+    for i, note in enumerate(np.arange(40, 74)):
         frets, strings = genNotemap(note, tuning)
         fretmap.append(frets)
         stringmap.append(strings)

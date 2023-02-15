@@ -78,8 +78,8 @@ def transformDFtoIndexable(filename, numStrings):
     df = filterDFbyNumstrings(df, numStrings)
     df = df.drop(['NumStrings'], axis=1)
     
-    # Replace ChordType with ChordType+Index appended together
-    df['ChordType'] = df['ChordType'] + df['Index'].astype(str)
+    # # Replace ChordType with ChordType+Index appended together
+    # df['ChordType'] = df['ChordType'] + df['Index'].astype(str)
 
     # reorder df columns. Put "Index" column to the end and rename it to "Shape"
     df = df.rename(columns={'Root': 'LETTER', 'ChordType': 'TYPE', 'Index': 'SHAPE', 'String1': 'STRINGONE', 'String2': 'STRINGTWO', 'String3': 'STRINGTHREE', 'String4': 'STRINGFOUR', 'String5': 'STRINGFIVE', 'String6': 'STRINGSIX'})
@@ -104,4 +104,4 @@ if __name__ == '__main__':
     # Generate all chords for given roots and chordTypes
     all_chs = genAllChords(roots, chordTypes, fmap, smap)
     df = createDF(all_chs)
-    savedf(df, 'all_chords.csv')
+    savedf(df, 'all_chords_9frets.csv')

@@ -226,7 +226,7 @@ def play_notes(i, fretboard_states, pluck_states, note_duration, vel, pitch, gui
     rightHand(iplaycommand, ifretnumber, guitar_bot_udp, strumq, note_duration)
 
 
-def playPolyphony(durations, fretboard_states, string_states, vels, pitches, guitar_bot_udp, strumq):
+def xplayPolyphony(durations, fretboard_states, string_states, vels, pitches, guitar_bot_udp, strumq):
     for i, dur in enumerate(durations):
         play_notes(i, fretboard_states[i], string_states[i], durations[i], vels[i], pitches[i], guitar_bot_udp, bot_picking_map, strumq)
 
