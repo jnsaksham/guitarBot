@@ -59,7 +59,7 @@ class GuitarBotUDP:
         self.sock.sendto(message, (self.udp_ip, self.udp_port))
         return 0
 
-    def send_msg_picker(self, ipickercommand, bstartpicker, pgain,dgain,ipickerpos,ipickervel,ipickeracc):
+    def send_msg_picker(self, ipickercommand, bstartpicker, pgain,dgain,ipickerpos,ipickervel,ipickeracc,isliderpos):
         router = self.router_picker
         ipickercommand_byte = ipickercommand.to_bytes(1, 'little')
         bstartpicker_byte = bstartpicker.to_bytes(1, 'little')
@@ -68,6 +68,7 @@ class GuitarBotUDP:
         ipickerpos_byte = ipickerpos.to_bytes(1, 'little', signed=True)
         ipickervel_byte = ipickervel.to_bytes(1, 'little')
         ipickeracc_byte = ipickeracc.to_bytes(2, 'little')
+        isliderpos_byte = isliderpos.to_bytes(1, 'little', signed=True)
 
         message = router
         message += ipickercommand_byte
@@ -77,6 +78,7 @@ class GuitarBotUDP:
         message += ipickerpos_byte
         message += ipickervel_byte
         message += ipickeracc_byte
+        message += isliderpos_byte
         time.sleep(0.005)
         self.sock.sendto(message, (self.udp_ip, self.udp_port))
         return 0
@@ -113,7 +115,7 @@ def main():
     # ipickervel - velocity of the pick, default 5
     # ipickeracc - acceleration of the pick, default  100
     guitarbot_udp.send_msg_picker(ipickercommand=1, bstartpicker=1, pgain=5000, dgain=20, ipickerpos=-30, ipickervel=5,
-                                  ipickeracc=100)
+                                  ipickeracc=100, isliderpos=-14)
 
 if __name__ == '__main__':
     main()

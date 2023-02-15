@@ -200,17 +200,17 @@ def rightHand(qplay, arm1, initial_pose, go_out_d, guitarbot_udp, strings, finge
         # guitarbot_udp.send_msg_picker(ipickercommand=1, bstartpicker=1, pgain=pp, dgain=dd, ipickerpos=-pos,
         #                               ipickervel=5, ipickeracc=100)  # strum down
         pos = -10
-        guitarbot_udp.send_msg_picker(ipickercommand=1, bstartpicker=1, pgain=pp, dgain=dd, ipickerpos=pos,
-                                      ipickervel=5, ipickeracc=100)  # strum down
+        #guitarbot_udp.send_msg_picker(ipickercommand=1, bstartpicker=1, pgain=pp, dgain=dd, ipickerpos=pos,
+                                      #ipickervel=5, #ipickeracc=100)  # strum down
 
 
         i = 1
         # print("started")
 
         for repeat in range(100):
-            qplay.get()
+            mode = qplay.get()
             #[string, mode] = qplay.get() # Current edit
-            string = int(string)
+            #string = int(string)
             mode = int(mode)
             # #### If picking do this : ###
 
@@ -291,7 +291,7 @@ def rightHand(qplay, arm1, initial_pose, go_out_d, guitarbot_udp, strings, finge
             i+=1
 
             ##### If strumming do this
-            initial = float(final)
+            #initial = float(final)
             # initialy = float(finaly)
             # sign = -1*sign
 
