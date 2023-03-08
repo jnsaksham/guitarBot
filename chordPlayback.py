@@ -40,8 +40,8 @@ def generate_chord_trajectory(roots, chordTypes, df, fret_distances):
     ifretplays.append(current_fretplay)
 
     for i in range(1, len(roots)):
-        ns = chordMidiToNotes(fretToNote(current_fretnum, tuning))
-        print (f'curr chord: {roots[i-1]}{chordTypes[i-1]}, i: {i-1}, current fretnum: {current_fretnum}, notes: {ns}')
+        # ns = chordMidiToNotes(fretToNote(current_fretnum, tuning))
+        print (f'curr chord: {roots[i-1]}{chordTypes[i-1]}, i: {i-1}, current fretnum: {current_fretnum}')
         # Get all possible chords corresponding to the next chord
         df_shortlisted = getAllPossibilities(df, roots[i], chordTypes[i])
 

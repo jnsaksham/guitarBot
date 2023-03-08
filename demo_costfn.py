@@ -7,6 +7,7 @@ import pandas as pd
 # from xarm.wrapper import XArmAPI
 from chordPlayback import getSingleChordArray, generate_chord_trajectory
 import time
+from dict_maps import fret_distances
 
 if __name__ == '__main__':
     # UDP_IP = "192.168.1.50"
@@ -58,7 +59,7 @@ if __name__ == '__main__':
     if ftype == 'H':
         fname = 'humanPlayable_9frets.csv'
     else:
-        fname = 'all_chords_9frets_sixstrings.csv'
+        fname = 'all_chords_9frets.csv'
     df = pd.read_csv(fname)
     numChords = int(input('Enter the number of chords you want: '))
     numLoops = 10
@@ -74,7 +75,7 @@ if __name__ == '__main__':
         roots = roots * numLoops
         chordTypes = chordTypes * numLoops
 
-        ifretnums, ifretplays = generate_chord_trajectory(roots, chordTypes, df)
+        ifretnums, ifretplays = generate_chord_trajectory(roots, chordTypes, df, fret_distances)
         # print (ifretnums)
         # for i, ifretnum in enumerate(ifretnums):
         #     print (f'fretnum: {ifretnum}, fretplay: {ifretplays[i]}')
