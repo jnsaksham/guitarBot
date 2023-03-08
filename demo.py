@@ -5,7 +5,7 @@ import pandas as pd
 # from queue import Queue
 # from threading import Thread
 # from xarm.wrapper import XArmAPI
-from chordPlayback import getSingleChordArray
+from chordPlayback import getSingleChordArray, generate_chord_trajectory
 import time
 
 if __name__ == '__main__':

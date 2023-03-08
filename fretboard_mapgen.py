@@ -29,9 +29,10 @@ def genNotemap(note, tuning):
 
 def fretToNote(array, tuning):
     notes = []
-    print (array)
+    # print (array)
     for i, n in enumerate(array):
         note = array[i] + tuning[i]
+        notes.append(note)
     return notes
 
 def mapgen():
