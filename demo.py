@@ -6,6 +6,11 @@ from queue import Queue
 from threading import Thread
 from xarm.wrapper import XArmAPI
 from chordPlayback import getSingleChordArray
+# from sj_utils import rightHand, parser, chords, setup
+# from queue import Queue
+# from threading import Thread
+# from xarm.wrapper import XArmAPI
+from chordPlayback import getSingleChordArray, generate_chord_trajectory
 import time
 
 if __name__ == '__main__':
@@ -20,13 +25,14 @@ if __name__ == '__main__':
 
     # Strumming arm initialization
     # Arm calibration
-    initial_pose = [684.3, 246.8, 377.7, -90, 0, -0]  # 287.6-5
-    final_pose = [684.3, 287.6, 299.2, -90, 0, -0]  # 78.5 delta
+    initial_pose = [684.3, 246.8, 387.7, -90, 0, -0]  # 287.6-5
+    final_pose = [684.3, 246.6, 279.2, -90, 0, -0]  # 78.5 delta
     
     go_out_d = 5
 
     chords(0, guitar_bot_udp)
     strumq = Queue()
+
     fingerq = Queue()
     midiq = Queue()
     global arm1
@@ -59,7 +65,7 @@ if __name__ == '__main__':
     if ftype == 'H':
         fname = 'humanPlayable_9frets.csv'
     else:
-        fname = 'all_chords_9frets_sixstrings.csv'
+        fname = 'all_chords_9frets_sixstring_vf.csv'
     df = pd.read_csv(fname)
     try:
         if demoType == 'S':
@@ -70,7 +76,7 @@ if __name__ == '__main__':
                     fretnum, fretplay = getSingleChordArray(df, root, chordType)
                     print (f'fretnum: {fretnum}, fretplay: {fretplay}')
                     guitar_bot_udp.send_msg_left(iplaycommand=fretplay, ifretnumber=fretnum)
-                    #strumq.put(1)
+                    strumq.put(1)
                     time.sleep(sleeptime)
 
 
@@ -94,7 +100,7 @@ if __name__ == '__main__':
                         print (f'fretnum: {fretnum}, fretplay: {fretplay}')
                         for j in range(counts):
                             guitar_bot_udp.send_msg_left(iplaycommand=fretplay, ifretnumber=fretnum)
-                            #strumq.put(1)
+                            strumq.put(1)
                             time.sleep(sleeptime)
         fretnum = [1, 1, 1, 1, 1, 1]
         fretplay = [1, 1, 1, 1, 1, 1]

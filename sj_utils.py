@@ -170,8 +170,8 @@ def rightHand(qplay, arm1, initial_pose, go_out_d, guitarbot_udp, strings, finge
     # Ndsy = np.append(Ndsy, outIn)
     # Ndsyy = np.append(Ndsyy, inOut)
     # print(Ndsy)
-    strumtdown = 0.3
-    strumtup = 0.2
+    strumtdown = 0.6
+    strumtup = 0.4
     dsx = fifth_poly(initial_pose[0], final_pose[0], strumtdown)
     dsy = fifth_poly(initial_pose[1], final_pose[1], strumtdown)
     dsz = fifth_poly(initial_pose[2], final_pose[2], strumtdown)
@@ -257,17 +257,19 @@ def rightHand(qplay, arm1, initial_pose, go_out_d, guitarbot_udp, strings, finge
             ### STRUMMING ####
             if mode == 1: #We are strumming
                 #pos = -pos
-                guitarbot_udp.send_msg_picker(ipickercommand=1, bstartpicker=1, pgain=4000, dgain=50, ipickerpos=-20,
+                guitarbot_udp.send_msg_picker(ipickercommand=1, bstartpicker=1, pgain=4000, dgain=50, ipickerpos=-10,
                                               ipickervel=20, ipickeracc=200, isliderpos=-7)
+                guitarbot_udp.send_msg_picker(ipickercommand=4, bstartpicker=1, pgain=4000, dgain=50, ipickerpos=-10,
+                                  ipickervel=20, ipickeracc=200, isliderpos=-7)
                 time.sleep(0.06)
 
                 ###old code
                 # guitarbot_udp.send_msg_picker(ipickercommand=4, bstartpicker=1, pgain=pp, dgain=dd,
                 #                               ipickerpos=int(-pos),
                 #                               ipickervel=20, ipickeracc=500, isliderpos=-15)
-                guitarbot_udp.send_msg_picker(ipickercommand=4, bstartpicker=1, pgain=pp, dgain=dd,
-                                              ipickerpos=pos,
-                                              ipickervel=20, ipickeracc=500, isliderpos=-15)
+                # guitarbot_udp.send_msg_picker(ipickercommand=4, bstartpicker=1, pgain=pp, dgain=dd,
+                #                               ipickerpos=pos,
+                #                               ipickervel=20, ipickeracc=500, isliderpos=-15)
                 # final = initial_pose[2]
                 # dz = fifth_poly(initial, final, timet)
                 # dx = np.zeros((1, (len(dz)))) + initial_pose[0]
@@ -275,17 +277,20 @@ def rightHand(qplay, arm1, initial_pose, go_out_d, guitarbot_udp, strings, finge
 
                 # strumBot(arm1, dx[0], dy[0], dz)
 
-                guitarbot_udp.send_msg_picker(ipickercommand=4, bstartpicker=1, pgain=4000, dgain=50, ipickerpos=-20,
-                                              ipickervel=20, ipickeracc=500, isliderpos=-7)
+                # guitarbot_udp.send_msg_picker(ipickercommand=4, bstartpicker=1, pgain=4000, dgain=50, ipickerpos=-20,
+                #                               ipickervel=20, ipickeracc=500, isliderpos=-15)
 
                  # strum down
                 strumBot(arm1, dsx, dsy, dsz) # DOWN strum NOISE
 
                 #pos = -pos
-                guitarbot_udp.send_msg_picker(ipickercommand=4, bstartpicker=1, pgain=pp, dgain=dd,
-                                              ipickerpos=pos,
+                # guitarbot_udp.send_msg_picker(ipickercommand=4, bstartpicker=1, pgain=pp, dgain=dd,
+                #                               ipickerpos=pos,
+                #                               ipickervel=20, ipickeracc=500, isliderpos=-15)
+                guitarbot_udp.send_msg_picker(ipickercommand=1, bstartpicker=1, pgain=4000, dgain=50,
+                                              ipickerpos=10,
                                               ipickervel=20, ipickeracc=500, isliderpos=-15)
-                strumBot(arm1, usx, Nusy, usz) #Up strum SILENT
+                strumBot(arm1, usx, usy, usz) #Up strum SILENT
                 sign = -1
 
             i+=1
