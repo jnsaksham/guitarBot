@@ -7,9 +7,7 @@ from generateChords import chordMidiToNotes
 def getSingleChordArray(df, root, chordType, random=True):
     if random == True:
         # From df, get all rows with root and chordType
-        # print (root, chordType)
         df = getAllPossibilities(df, root, chordType)
-        # print (len(df))
         array = select_random_chord(df)
         
     fretnum, fretplay = transform_to_fretnum_fretplay(array)
@@ -40,7 +38,6 @@ def generate_chord_trajectory(roots, chordTypes, df, fret_distances):
     ifretplays.append(current_fretplay)
 
     for i in range(1, len(roots)):
-        # ns = chordMidiToNotes(fretToNote(current_fretnum, tuning))
         print (f'curr chord: {roots[i-1]}{chordTypes[i-1]}, i: {i-1}, current fretnum: {current_fretnum}')
         # Get all possible chords corresponding to the next chord
         df_shortlisted = getAllPossibilities(df, roots[i], chordTypes[i])
@@ -92,6 +89,8 @@ def transform_to_fretnum_fretplay(array):
     return fretnum, fretplay
 
 def select_random_chord(df):
+    # print ('length df')
+    # print (df)
     index = np.random.randint(0, len(df))
     return df.values[index][3:9]
 
@@ -103,12 +102,10 @@ def shortlist(prev_state, curr_state, potential_states, fret_distances):
         # Get the distance between the current state and the potential state
         try:
             dist = compute_cost(prev_state, curr_state, potential_states[i], fret_distances)
-            # print (dist)
         except Exception as e:
             dist = 100
             continue
         costs.append(dist)
-    # print (f'costs: {costs}')
     
     minCostIndex = np.argmin(costs)
     ifretnum = potential_states[minCostIndex]
@@ -135,5 +132,4 @@ def compute_cost(prev_state, curr_state, potential_state, fret_distances):
                 dist += abs(int(float(potential_state[i])))
             else:
                 dist += abs(int(float(potential_state[i])) - int(float(prev_state[i])))
-    # print (f'current state: {curr_state}, potential state: {potential_state}, cost: {dist}')
     return dist

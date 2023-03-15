@@ -27,12 +27,16 @@ def genNotemap(note, tuning):
             continue
     return frets, strings
 
-def fretToNote(array, tuning):
-    notes = []
-    print (array)
-    for i, n in enumerate(array):
-        note = array[i] + tuning[i]
-    return notes
+def fretToNote(f, s, tuning):
+    """
+    Convert a fret position and a string position to midi note
+    inputs 
+    f: type (float). Fret number of the note
+    s: type (float). String number of the note
+    return: midi note value corresponding to given fret position and sttring position
+    """
+    note = tuning[int(s-1)] + f
+    return note
 
 def mapgen():
     fretmap = []
