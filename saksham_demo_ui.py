@@ -20,4 +20,12 @@ print("li", li)
 
 print("firstc: ", firstc)
 
-# RobotController.main(ri, li, firstc, measure_time)
+try:
+    RobotController.main(ri, li, firstc, measure_time)
+
+except KeyboardInterrupt:
+    ri = [[['D', 'C', 0.5, 1.0], '', '', '', '', '', '', '']]
+    li = [[[[5, 5, 5, 5, 5, 5], [1, 1, 1, 1, 1, 1]], '', '', '']]
+    firstc = [[5, 5, 5, 5, 5, 5], [1, 1, 1, 1, 1, 1]]
+    
+    RobotController.main(ri, li, firstc, measure_time)
