@@ -72,7 +72,7 @@ from tkinter import *
 from tkinter.ttk import *
 import tkinter.messagebox
 
-def UI():
+def UI(systemOwner='Marcus'):
     window = tk.Tk(className=' GuitarBot')
     window.geometry("1300x600")
 
@@ -392,6 +392,30 @@ def UI():
     measuresDisplay.pack(side=LEFT)
     addMeasureBtn.pack(side=LEFT)
 
+    if systemOwner == 'Saksham':
+        demoConfigFrame = Frame(window)
+        demoConfigFrame.pack()
+        demoSelection = StringVar(window)
+        # chordSelection = StringVar(window)
+        demoTypes = [
+            "Bot",
+            "Human"
+        ]
+        # chordSelectionTypes = [
+        #     "costFunction",
+        #     "Random"
+        # ]
+        demoLabel = Label(demoConfigFrame, text = "Demo type: ")
+        demoType = OptionMenu(demoConfigFrame, demoSelection, "Bot", *demoTypes)
+
+        # chSelLabel = Label(demoConfigFrame, text = "Chord selection: ")
+        # chSelType = OptionMenu(demoConfigFrame, chordSelection, "costFunction", *chordSelectionTypes)
+
+        demoLabel.pack(side=LEFT)
+        demoType.pack(side=LEFT)
+        # chSelLabel.pack(side=LEFT)
+        # chSelType.pack(side=LEFT)
+
     def collect_chord_strum_data():
         global left_arm
         global right_arm
@@ -417,6 +441,8 @@ def UI():
     send.pack(pady=12)
 
     window.mainloop()
-
-    return right_arm, left_arm, mtime
+    if systemOwner == 'Saksham':
+        return left_arm, right_arm, mtime, demoSelection.get()
+    else:
+        return right_arm, left_arm, mtime
 

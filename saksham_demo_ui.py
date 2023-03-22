@@ -3,15 +3,17 @@ import UIParse
 import RobotController
 import pandas as pd
 
-UI_Out_rightHand, UI_Out_leftHand, measure_time = UIGen.UI()
-# print (f'UI_out_rh: {UI_Out_rightHand}, UI_out_lh: {UI_Out_leftHand}, measure_time: {measure_time}')
-
+systemOwner = 'Saksham'
+UI_Out_rightHand, UI_Out_leftHand, measure_time, chordsDB = UIGen.UI(systemOwner)
+# print (f'UI_out_rh: {UI_Out_rightHand}, UI_out_lh: {UI_Out_leftHand}, measure_time: {measure_time}, chordsDB: {chordsDB}')
 
 numStrings = 6
 inversions = 0
-df = pd.read_csv(f'all_chords_9frets_v2_{numStrings}str_inv{inversions}.csv')
-# df = pd.read_csv(f'all_chords_9frets_v2.csv')
-
+if chordsDB == 'Bot':
+    df = pd.read_csv(f'all_chords_9frets_v2_{numStrings}str_inv{inversions}.csv')
+    # df = pd.read_csv(f'all_chords_9frets_v2.csv')
+else:
+    df = pd.read_csv(f'humanPlayable_9frets.csv')
 
 ri, initStrum = UIParse.parseright_M(UI_Out_rightHand, measure_time)
 li, firstc  = UIParse.parseleft_S(UI_Out_leftHand, df)
