@@ -140,12 +140,12 @@ if __name__ == '__main__':
     inversion = 0
 
     # Generate all chords for given roots and chordTypes
-    all_chs = genAllChords(roots, chordTypes, fmap, smap, tuning)
-    df = createDF(all_chs)
+    # all_chs = genAllChords(roots, chordTypes, fmap, smap, tuning)
+    # df = createDF(all_chs)
     folderName = 'chord_databases'
     fname = 'all_chords_9frets_v2'
-    fpath = os.path.join(folderName, f'{fname}.csv')
-    savedf(df, fpath)
+    # fpath = os.path.join(folderName, f'{fname}.csv')
+    # savedf(df, fpath)
     df = transformDFtoIndexable(folderName, fname, groupByNumStrings, inversion)
     fpath = os.path.join(folderName, f'{fname}_{groupByNumStrings}str_inv{inversion}.csv')
     savedf(df, fpath)

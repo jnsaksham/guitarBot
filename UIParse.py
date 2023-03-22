@@ -174,7 +174,7 @@ def parseright_M(right_arm, measure_time):
             deltaT += measure_time / 8
         mra += 1
     right_information = right_arm
-    print("ri", right_information, initialStrum)
+    # print("ri", right_information, initialStrum)
     return right_information, initialStrum
 
 
@@ -192,21 +192,14 @@ def parseleft_S(left_arm, df):
 
                 if i == 0:
                     frets, command = getSingleChordArray(df, key, type, random=True)
-                    prev_fretnum = frets
                     i += 1
 
                 else:
-                    curr_frets = frets
-                    curr_commands = command
                     df_shortlisted = getAllPossibilities(df, key, type)
                     # Convert all possible chords to fretnum arrays
                     next_fretnum_all = convert_df_to_chord_array(df_shortlisted)
-                    next_fretnum = shortlist(prev_fretnum, curr_frets, next_fretnum_all, fret_distances)
-                    prev_fretnum = frets
-                    frets, command = transform_to_fretnum_fretplay(next_fretnum)
-
+                    frets, command = shortlist(frets, next_fretnum_all, fret_distances)
                     
-                # frets, command, dtraj, utraj = get_chords(chords_dir, key, type)
                 left_arm[mcount][bcount] = [frets, command]
                 if firstcfound == False:
                     firstc.append(frets)
