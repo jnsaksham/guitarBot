@@ -3,13 +3,14 @@ import pandas as pd
 from fretboard_mapgen import fretToNote
 from dict_maps import tuning, fret_distances
 from generateChords import chordMidiToNotes
+import sqlite3
 
-def getSingleChordArray(df, root, chordType, random=True):
+def getSingleChordArray(df, root, chordType, chordsDB, random=True):
     if random == True:
         # From df, get all rows with root and chordType
         print (f'root: {root}, chordType: {chordType}')
         df = getAllPossibilities(df, root, chordType)
-        array = select_random_chord(df)
+        array = select_random_chord(df, chordsDB)
         
     fretnum, fretplay = transform_to_fretnum_fretplay(array)
     return fretnum, fretplay
@@ -89,56 +90,19 @@ def transform_to_fretnum_fretplay(array):
             fretnum.append(int(float(i)))
     return fretnum, fretplay
 
-def select_random_chord(df):
+def select_random_chord(df, chordsDB):
     index = np.random.randint(0, len(df))
     chord_row = list(df.values[index][3:9])
     catch = ['X', '0.0', '0']
     intersection = list(set(catch) & set(chord_row))
     if intersection:
-        print (f'chord_row: {chord_row}')
-        return select_random_chord(df)
+        # print (f'chord_row: {chord_row}')
+        if chordsDB == 'Bot':
+            return select_random_chord(df)
+        else:
+            return chord_row
     else:
         return chord_row
-
-
-# def shortlist(prev_state, curr_state, potential_states, fret_distances):
-#     costs = []
-#     # Loop through all potential states
-#     for i in range(len(potential_states)):
-#         # Get the distance between the current state and the potential state
-#         try:
-#             dist = compute_cost(prev_state, curr_state, potential_states[i], fret_distances)
-#         except Exception as e:
-#             dist = 1000
-#             continue
-#         costs.append(dist)
-    
-#     minCostIndex = np.argmin(costs)
-#     ifretnum = potential_states[minCostIndex]
-#     return ifretnum
-
-# def compute_cost(prev_state, curr_state, potential_state, fret_distances):
-#     """
-#     Compute the distance between the current state and the potential state. Rules for computing distance:
-#     1. If current state has no 'X' and potential state has 'X' at >=1 positions, then distance = 0 for positions with 'X', otherwise distance = abs(potential_state[i] - curr_state[i])
-#     2. If current state has 'X' at >=1 positions, then distance = 0 for positions with 'X', otherwise distance = abs(potential_state[i] - prev_state[i])
-#     """
-    
-#     dist = 0
-#     for i in range(len(curr_state)):
-#         if curr_state[i] != 'X':
-#             if potential_state[i] == 'X':
-#                 dist += 0
-#             else:
-#                 dist += abs(int(float(curr_state[i])) - int(float(potential_state[i])))
-#         else:
-#             if prev_state[i] == 'X' and potential_state[i] == 'X':
-#                 dist += 0
-#             elif prev_state[i] == 'X' and potential_state[i] != 'X':
-#                 dist += abs(int(float(potential_state[i])))
-#             else:
-#                 dist += abs(int(float(potential_state[i])) - int(float(prev_state[i])))
-#     return dist
 
 def shortlist(curr_state, potential_states, fret_distances):
     """
@@ -187,7 +151,7 @@ def compute_cost(curr_state, potential_state, fret_distances):
     if 'X' or '0.0' in potential_state:
         updated_play = []
         for i, curr in enumerate(curr_state):
-            if potential_state[i] == '0':
+            if potential_state[i] == '0' or '0.0':
                 cost += 0
                 potential_state[i] == curr
                 updated_play.append(1)

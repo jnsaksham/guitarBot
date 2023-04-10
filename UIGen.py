@@ -396,25 +396,26 @@ def UI(systemOwner='Marcus'):
         demoConfigFrame = Frame(window)
         demoConfigFrame.pack()
         demoSelection = StringVar(window)
-        # chordSelection = StringVar(window)
+        chordSelection = StringVar(window)
         demoTypes = [
             "Bot",
             "Human"
         ]
-        # chordSelectionTypes = [
-        #     "costFunction",
-        #     "Random"
-        # ]
+        chordSelectionTypes = [
+            "random",
+            "greedy",
+            "viterbi"
+        ]
         demoLabel = Label(demoConfigFrame, text = "Demo type: ")
         demoType = OptionMenu(demoConfigFrame, demoSelection, "Bot", *demoTypes)
 
-        # chSelLabel = Label(demoConfigFrame, text = "Chord selection: ")
-        # chSelType = OptionMenu(demoConfigFrame, chordSelection, "costFunction", *chordSelectionTypes)
+        chSelLabel = Label(demoConfigFrame, text = "Chord selection: ")
+        chSelType = OptionMenu(demoConfigFrame, chordSelection, "costFunction", *chordSelectionTypes)
 
         demoLabel.pack(side=LEFT)
         demoType.pack(side=LEFT)
-        # chSelLabel.pack(side=LEFT)
-        # chSelType.pack(side=LEFT)
+        chSelLabel.pack(side=LEFT)
+        chSelType.pack(side=LEFT)
 
     def collect_chord_strum_data():
         global left_arm
@@ -442,7 +443,7 @@ def UI(systemOwner='Marcus'):
 
     window.mainloop()
     if systemOwner == 'Saksham':
-        return left_arm, right_arm, mtime, demoSelection.get()
+        return right_arm, left_arm, mtime, demoSelection.get(), chordSelection.get()
     else:
         return right_arm, left_arm, mtime
 

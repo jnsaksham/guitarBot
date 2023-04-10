@@ -1,6 +1,7 @@
 import pandas as pd
-from chordPlayback import getSingleChordArray, getAllPossibilities, convert_df_to_chord_array, transform_to_fretnum_fretplay, shortlist
+from chordPlayback import getSingleChordArray, getAllPossibilities, convert_df_to_chord_array, shortlist
 from dict_maps import fret_distances
+from viterbi import viterbi_search
 
 
 def get_chords_M(directory, chord_letter, chord_type):
@@ -129,6 +130,8 @@ def parseright_M(right_arm, measure_time):
     pbra = 0
     deltaT = 0
 
+    print (f'right_arm_input: {right_arm}')
+    
     for measure in right_arm:
         bra = 0
         for beat in measure:
@@ -178,37 +181,64 @@ def parseright_M(right_arm, measure_time):
     return right_information, initialStrum
 
 
-def parseleft_S(left_arm, df):
+def getFirstC(l_arm):
     firstc = []
     firstcfound = False
     mcount = 0
-    for measure in left_arm:
+    for measure in l_arm:
         bcount = 0
-        i = 0
         for chords in measure:
             if len(chords) != 0:
-                key = chords.split(' ')[0]
-                type = chords.split(' ')[1]
-
-                if i == 0:
-                    frets, command = getSingleChordArray(df, key, type, random=True)
-                    i += 1
-
-                else:
-                    df_shortlisted = getAllPossibilities(df, key, type)
-                    # Convert all possible chords to fretnum arrays
-                    next_fretnum_all = convert_df_to_chord_array(df_shortlisted)
-                    frets, command = shortlist(frets, next_fretnum_all, fret_distances)
-                    
-                left_arm[mcount][bcount] = [frets, command]
+                frets = chords[0]
+                command = chords[1]
                 if firstcfound == False:
                     firstc.append(frets)
                     firstc.append(command)
                     firstcfound = True
             bcount += 1
         mcount += 1
-    
-    return left_arm, firstc
+    return firstc
+
+def parseleft_S(left_arm, df, optimizer, chordsDB):
+    if optimizer == 'viterbi':
+        l_arm = viterbi_search(left_arm, df, chordsDB)
+        firstc = getFirstC(l_arm)
+        return l_arm, firstc
+    else:
+        firstc = []
+        firstcfound = False
+        mcount = 0
+        l_arm = left_arm
+        for measure in l_arm:
+            bcount = 0
+            i = 0
+            for chords in measure:
+                if len(chords) != 0:
+                    key = chords.split(' ')[0]
+                    type = chords.split(' ')[1]
+
+                    if i == 0:
+                        frets, command = getSingleChordArray(df, key, type, chordsDB, random=True)
+                        i += 1
+
+                    else:
+                        df_shortlisted = getAllPossibilities(df, key, type)
+                        # Convert all possible chords to fretnum arrays
+                        next_fretnum_all = convert_df_to_chord_array(df_shortlisted)
+                        if optimizer == 'cost':
+                            frets, command = shortlist(frets, next_fretnum_all, fret_distances)
+                        elif optimizer == 'random':
+                            frets, command = getSingleChordArray(df, key, type, chordsDB, random=True)
+
+                    l_arm[mcount][bcount] = [frets, command]
+                    if firstcfound == False:
+                        firstc.append(frets)
+                        firstc.append(command)
+                        firstcfound = True
+                bcount += 1
+            mcount += 1
+        
+        return l_arm, firstc
 
 def parseleft_M(left_arm):
     firstc = []
